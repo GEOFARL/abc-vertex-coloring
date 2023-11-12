@@ -10,6 +10,9 @@ export default class ArtificialBeeColony {
   private graph: Graph;
   private palette: number[];
 
+  private availableVertices: number[];
+  private usedColors: number[] = [];
+
   constructor(graph: Graph, config: ArtificialBeeColonyConfig) {
     const { employedBeesCount, onlookerBeesCount } = config;
     this.EMPLOYED_BEES_COUNT = employedBeesCount;
@@ -18,9 +21,19 @@ export default class ArtificialBeeColony {
     this.initialGraph = graph;
     this.graph = this.initialGraph.getCopy();
     this.palette = this.generatePalette();
+
+    this.availableVertices = this.graph.getVertexArray();
+  }
+
+  public getChromaticNumber() {
+    while (!this.isCompleted) {}
   }
 
   private generatePalette() {
     return Array.from({ length: this.PALETTE_SIZE }, (_, i) => i);
+  }
+
+  private isCompleted() {
+    return this.graph.isValid();
   }
 }
