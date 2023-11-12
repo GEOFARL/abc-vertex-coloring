@@ -55,6 +55,17 @@ export default class Graph {
     return true;
   }
 
+  public tryToColor(vertex: number, newColor: number) {
+    const oldColor = this.colors[vertex];
+    this.colors[vertex] = newColor;
+    const isValid = this.isValidColoring();
+    if (!isValid) {
+      this.colors[vertex] = oldColor;
+    }
+
+    return isValid;
+  }
+
   private isColored(vertexIndex: number) {
     return this.colors[vertexIndex] !== -1;
   }

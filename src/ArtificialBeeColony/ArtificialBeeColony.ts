@@ -39,6 +39,15 @@ export default class ArtificialBeeColony {
       const chosenVertices = this.sendEmployedBees();
       this.sendOnlookerBees(chosenVertices);
     }
+
+    const chromaticNumber = this.usedColors.length;
+    return chromaticNumber;
+  }
+
+  public reset() {
+    this.usedColors = [];
+    this.availableVertices = this.graph.getVertexArray();
+    this.graph = this.initialGraph.getCopy();
   }
 
   private sendEmployedBees() {
@@ -108,7 +117,33 @@ export default class ArtificialBeeColony {
       .forEach((adjacentVertex) => this.colorVertex(adjacentVertex));
   }
 
-  private colorVertex(vertex: number) {}
+  private colorVertex(vertex: number) {
+    const availableColors = [...this.usedColors];
+    let isColored = false;
+
+    while (!isColored) {
+      if (availableColors.length === 0) {
+        const newColor = this.getNextColor();
+        this.usedColors.push(newColor);
+
+        this.graph.tryToColor(vertex, newColor);
+        break;
+      }
+
+      const randomColorIdx = getRandomNumberInRange(
+        0,
+        availableColors.length - 1
+      );
+      const color = availableColors[randomColorIdx];
+
+      availableColors.splice(randomColorIdx, 1);
+      isColored = this.graph.tryToColor(vertex, color);
+    }
+  }
+
+  private getNextColor() {
+    return this.palette[this.usedColors.length];
+  }
 
   private getDegreesOfChosenVertices(chosenVertices: number[]) {
     return chosenVertices.map((vertex) => this.graph.getVertexDegree(vertex));
