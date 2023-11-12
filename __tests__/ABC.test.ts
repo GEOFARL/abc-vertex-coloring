@@ -22,4 +22,39 @@ describe('Artificial Bee Colony', () => {
       expect(!!chosenVertices.find((v) => v === vertex)).toBe(false);
     });
   });
+
+  it('should produce correct nectar values', () => {
+    const graph = new Graph([
+      [0, 1, 0, 1],
+      [1, 0, 1, 0],
+      [0, 1, 0, 0],
+      [1, 0, 0, 0],
+    ]);
+
+    const ABC = new ArtificialBeeColony(graph);
+
+    const chosenVertices = ABC['sendEmployedBees']();
+    const degrees = ABC['getDegreesOfChosenVertices'](chosenVertices);
+    const nectarValues = ABC['getNectarValues'](degrees);
+
+    expect(nectarValues.reduce((p, a) => a + p, 0)).toBe(1);
+  });
+
+  it('should distribute onlooker bees correctly', () => {
+    const graph = new Graph([
+      [0, 1, 0, 1],
+      [1, 0, 1, 0],
+      [0, 1, 0, 0],
+      [1, 0, 0, 0],
+    ]);
+
+    const ABC = new ArtificialBeeColony(graph);
+
+    const chosenVertices = ABC['sendEmployedBees']();
+    const degrees = ABC['getDegreesOfChosenVertices'](chosenVertices);
+
+    const distribution = ABC['getOnlookerBeesDistribution'](degrees);
+    console.log(distribution);
+    expect(distribution.reduce((p, a) => a + p, 0)).toBe(28);
+  });
 });
