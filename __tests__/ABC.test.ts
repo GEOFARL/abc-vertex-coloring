@@ -54,7 +54,6 @@ describe('Artificial Bee Colony', () => {
     const degrees = ABC['getDegreesOfChosenVertices'](chosenVertices);
 
     const distribution = ABC['getOnlookerBeesDistribution'](degrees);
-    console.log(distribution);
     expect(distribution.reduce((p, a) => a + p, 0)).toBe(28);
   });
 });
