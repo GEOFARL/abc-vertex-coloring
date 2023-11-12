@@ -1,20 +1,21 @@
 import ArtificialBeeColony from './ArtificialBeeColony/ArtificialBeeColony';
 import GraphGenerator from './GraphGenerator/GraphGenerator';
 
-// const graphGenerator = new GraphGenerator();
-// Object.assign(DEFAULT_CONFIG, {
-//   vertexCount: 8,
-//   maxVertexDegree: 5,
-//   verbose: true,
-// })
-// const graph = graphGenerator.generateGraph();
-// const ABC = new ArtificialBeeColony(graph);
+const graphGenerator = new GraphGenerator({
+  vertexCount: 8,
+  minVertexDegree: 1,
+  maxVertexDegree: 4,
+  verbose: true,
+});
+const graph = graphGenerator.generateGraph();
+const ABC = new ArtificialBeeColony(graph, {
+  verbose: true,
+  employedBeesCount: 1,
+  onlookerBeesCount: 3,
+});
 
-// for (let i = 0; i < 1000; i += 1) {
-//   const chromaticNumber = ABC.getChromaticNumber();
-//   console.log('Chromatic number: ', chromaticNumber);
-//   ABC.reset();
-// }
+const chromaticNumber = ABC.getChromaticNumber();
+console.log('Chromatic number: ', chromaticNumber);
 
 export default function getData() {
   const graphGenerator = new GraphGenerator();
@@ -36,20 +37,5 @@ export default function getData() {
     }
   }
 
-  // for (let i = 0; i < 100; i += 1) {
-  //   const chromaticNumber = ABC.getChromaticNumber();
-
-  //   console.log(chromaticNumber);
-  //   ABC.reset();
-  //   if (chromaticNumber < minChromaticNumber) {
-  //     minChromaticNumber = chromaticNumber;
-  //   }
-  //   if (i % 2 === 0 && i !== 0) {
-  //     chromaticNumbers.push(minChromaticNumber);
-  //   }
-  // }
-
   return chromaticNumbers;
 }
-
-// graph.print();

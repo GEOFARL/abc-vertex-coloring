@@ -1,6 +1,10 @@
 import Graph from '../Graph';
 import { getRandomNumberInRange } from '../utils';
-import { ArtificialBeeColonyConfig } from './ArtificialBeeColony.types';
+import Logger from '../utils/Logger';
+import {
+  ArtificialBeeColonyConfig,
+  ArtificialBeeColonyLoggerOptions,
+} from './ArtificialBeeColony.types';
 
 const DEFAULT_CONFIG: ArtificialBeeColonyConfig = {
   employedBeesCount: 2,
@@ -11,6 +15,7 @@ export default class ArtificialBeeColony {
   private readonly EMPLOYED_BEES_COUNT: number;
   private readonly ONLOOKER_BEES_COUNT: number;
   private readonly PALETTE_SIZE = 10000;
+  private readonly IS_VERBOSE: boolean;
 
   private readonly initialGraph: Graph;
   private graph: Graph;
@@ -23,9 +28,10 @@ export default class ArtificialBeeColony {
     graph: Graph,
     config: ArtificialBeeColonyConfig = DEFAULT_CONFIG
   ) {
-    const { employedBeesCount, onlookerBeesCount } = config;
+    const { employedBeesCount, onlookerBeesCount, verbose } = config;
     this.EMPLOYED_BEES_COUNT = employedBeesCount;
     this.ONLOOKER_BEES_COUNT = onlookerBeesCount;
+    this.IS_VERBOSE = !!verbose;
 
     this.initialGraph = graph;
     this.graph = this.initialGraph.getCopy();
@@ -35,9 +41,20 @@ export default class ArtificialBeeColony {
   }
 
   public getChromaticNumber() {
+    this.log('===== STARTING ALGORITHM =====\n');
     while (!this.isCompleted()) {
+      this.log('SENDING Employed bees\n');
+
       const chosenVertices = this.sendEmployedBees();
+
+      this.log('CHOSEN VERTICES:');
+      this.log(null, { array: chosenVertices });
+
+      this.log('SENDING Onlooker bees\n');
       this.sendOnlookerBees(chosenVertices);
+
+      this.log('CURRENT COLORING: ');
+      this.log(null, { array: this.graph.getColors() });
     }
 
     const chromaticNumber = this.usedColors.length;
@@ -155,5 +172,26 @@ export default class ArtificialBeeColony {
 
   private isCompleted() {
     return this.graph.isValid();
+  }
+
+  private log(
+    message: string | null,
+    options?: ArtificialBeeColonyLoggerOptions
+  ) {
+    let array;
+
+    if (options) {
+      array = options.array;
+    }
+
+    if (this.IS_VERBOSE) {
+      if (array) {
+        Logger.logArray(array);
+      } else {
+        if (message) {
+          Logger.log(message);
+        }
+      }
+    }
   }
 }

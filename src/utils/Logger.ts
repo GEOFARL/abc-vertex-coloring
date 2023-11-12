@@ -17,6 +17,19 @@ export default class Logger {
 
       Logger.log(rowString);
     });
-    console.log('');
+    Logger.log('');
+  }
+
+  public static logArray<T>(array: T[]) {
+    let string = '';
+    array.forEach((el, i) => {
+      if (i === array.length - 1) {
+        string += el;
+      } else {
+        string += el + ', ';
+      }
+    });
+    string += '\n';
+    Logger.log(string);
   }
 }

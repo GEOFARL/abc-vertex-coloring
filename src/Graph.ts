@@ -73,4 +73,8 @@ export default class Graph {
   private isTheSameColor(firstVertexIndex: number, secondVertexIndex: number) {
     return this.colors[firstVertexIndex] === this.colors[secondVertexIndex];
   }
+
+  public getColors() {
+    return this.colors;
+  }
 }
