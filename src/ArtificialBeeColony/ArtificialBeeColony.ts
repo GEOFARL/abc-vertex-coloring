@@ -1,5 +1,11 @@
 import Graph from '../Graph';
+import { getRandomNumberInRange } from '../utils';
 import { ArtificialBeeColonyConfig } from './ArtificialBeeColony.types';
+
+const DEFAULT_CONFIG: ArtificialBeeColonyConfig = {
+  employedBeesCount: 2,
+  onlookerBeesCount: 28,
+};
 
 export default class ArtificialBeeColony {
   private readonly EMPLOYED_BEES_COUNT: number;
@@ -13,7 +19,10 @@ export default class ArtificialBeeColony {
   private availableVertices: number[];
   private usedColors: number[] = [];
 
-  constructor(graph: Graph, config: ArtificialBeeColonyConfig) {
+  constructor(
+    graph: Graph,
+    config: ArtificialBeeColonyConfig = DEFAULT_CONFIG
+  ) {
     const { employedBeesCount, onlookerBeesCount } = config;
     this.EMPLOYED_BEES_COUNT = employedBeesCount;
     this.ONLOOKER_BEES_COUNT = onlookerBeesCount;
@@ -26,7 +35,26 @@ export default class ArtificialBeeColony {
   }
 
   public getChromaticNumber() {
-    while (!this.isCompleted) {}
+    while (!this.isCompleted()) {
+      const chosenVertices = this.sendEmployedBees();
+    }
+  }
+
+  private sendEmployedBees() {
+    const chosenVertices = [];
+    for (let i = 0; i < this.EMPLOYED_BEES_COUNT; i += 1) {
+      const randomVertexIndex = getRandomNumberInRange(
+        0,
+        this.availableVertices.length
+      );
+
+      const randomVertex = this.availableVertices[randomVertexIndex];
+      this.availableVertices = this.availableVertices.filter(
+        (vertex) => vertex !== randomVertex
+      );
+      chosenVertices.push(randomVertex);
+    }
+    return chosenVertices;
   }
 
   private generatePalette() {
