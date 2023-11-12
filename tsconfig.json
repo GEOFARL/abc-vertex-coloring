@@ -8,8 +8,9 @@
     "strict": true,
     "noImplicitAny": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": ["jest"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "__tests__/**/*"],
   "exclude": ["node_modules"]
 }
