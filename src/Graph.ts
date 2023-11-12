@@ -23,6 +23,14 @@ export default class Graph {
     return this.adjMatrix[vertexIndex].filter((el) => el === 1).length;
   }
 
+  public getAdjacentVertices(vertexIndex: number) {
+    return this.adjMatrix[vertexIndex]
+      .map((vertex, i) => {
+        return vertex === 1 ? i : null;
+      })
+      .filter((el) => el !== null) as number[];
+  }
+
   public isValid() {
     const uncoloredVerticesCount = this.colors.filter(
       (color) => color === -1

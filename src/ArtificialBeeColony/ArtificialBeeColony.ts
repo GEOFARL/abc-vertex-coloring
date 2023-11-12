@@ -68,7 +68,10 @@ export default class ArtificialBeeColony {
 
     chosenVertices.forEach((chosenVertex, chosenVertexIndex) => {
       const onlookerBeesCount = onlookerBeesDistribution[chosenVertexIndex];
-      // TODO: send bees to color adjacent vertices and this vertex itself
+
+      const adjacentVertices = this.graph.getAdjacentVertices(chosenVertex);
+      this.colorAdjacentVertices(adjacentVertices, onlookerBeesCount);
+      this.colorVertex(chosenVertex);
     });
   }
 
@@ -95,6 +98,17 @@ export default class ArtificialBeeColony {
     );
     return degreesOfChosenVertices.map((degree) => degree / sumOfDegrees);
   }
+
+  private colorAdjacentVertices(
+    adjacentVertices: number[],
+    onlookerBeesCount: number
+  ) {
+    adjacentVertices
+      .slice(0, onlookerBeesCount)
+      .forEach((adjacentVertex) => this.colorVertex(adjacentVertex));
+  }
+
+  private colorVertex(vertex: number) {}
 
   private getDegreesOfChosenVertices(chosenVertices: number[]) {
     return chosenVertices.map((vertex) => this.graph.getVertexDegree(vertex));
