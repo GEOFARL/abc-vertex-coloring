@@ -6,6 +6,13 @@ import {
 import { getRandomNumberInRange } from '../utils';
 import Logger from '../utils/Logger';
 
+const DEFAULT_CONFIG = {
+  vertexCount: 200,
+  minVertexDegree: 1,
+  maxVertexDegree: 20,
+  verbose: false,
+};
+
 export default class GraphGenerator {
   private readonly VERTEX_COUNT: number;
   private readonly MIN_VERTEX_DEGREE: number;
@@ -14,7 +21,7 @@ export default class GraphGenerator {
 
   private adjMatrix: number[][];
 
-  constructor(config: GraphGeneratorConfig) {
+  constructor(config: GraphGeneratorConfig = DEFAULT_CONFIG) {
     const { vertexCount, minVertexDegree, maxVertexDegree, verbose } = config;
     this.VERTEX_COUNT = vertexCount;
     this.MIN_VERTEX_DEGREE = minVertexDegree;

@@ -8,4 +8,8 @@ export default class Graph {
   public print() {
     console.log(this.adjMatrix);
   }
+
+  public getCopy() {
+    return new Graph(JSON.parse(JSON.stringify(this.adjMatrix)));
+  }
 }
